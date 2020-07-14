@@ -13,7 +13,7 @@ article timestamps: thus, this dimension is fixed.
 width.
 * Panning, (semantic) zooming, brushing (focus + context) and details on demand (full-text and score rankings) are applicable. 
 * Choose between novice and expert mode: Optimize graph parameters for your specific use case, but only if you want to!
-* Much more things are possible, visit our detailed [Feature Overview](https://https://github.com/PMeschenmoser/Visual-Analyzer-for-News-Dependencies/wiki/VAND-Graph:-Feature-Overview or 
+* Much more things are possible, visit our detailed [Feature Overview](https://https://github.com/PMeschenmoser/Visual-Analyzer-for-News-Dependencies/wiki/VAND-Graph:-Feature-Overview) or 
 [Frontend Interaction](https://github.com/PMeschenmoser/Visual-Analyzer-for-News-Dependencies/wiki/VAND-Graph:-Frontend-Interaction)! 
 
 ## How to cite?
