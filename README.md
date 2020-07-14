@@ -1,4 +1,4 @@
-# VAND - Graph#
+# VAND - Graph
 
 ## Visual Explorer for News Dependencies - Graph
 
