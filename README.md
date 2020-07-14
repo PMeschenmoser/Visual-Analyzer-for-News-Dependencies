@@ -1,10 +1,10 @@
-# VAND
+# VAND - Multi
 
-## Visual Explorer for News Dependencies
+## Visual Explorer for News Dependencies - Multi
 
-### What's VAND?
+### What's VAND Multi?
 VAND is a web application for segment-based detection and visualisation of information reuse between
-news articles. There are two versions: Multi (default, on the master branch) and Graph. VAND is intended as research-oriented application with the goal of matching parameter evaluation
+news articles. Please also see the graph-based application on the "graph" branch. VAND is intended as research-oriented application with the goal of matching parameter evaluation
 and optimization. Its backend works with node.js, its frontend is mainly programmed with d3 v4.
  
  ![welcome](https://i.imgur.com/F40RQK8.jpg)
