@@ -1,0 +1,109 @@
+swagger: '2.0'
+info:
+  title: VAND API
+  version: "1.0.0"
+  
+# the domain of the service
+host: localhost:3000
+# array of all schemes that your API supports
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /datalayer/getServerOverview:
+    post:
+      summary: datalayer/getSeverOverview
+      description: |
+        This call is used to serve data for the frontend's data table at the import dialog. Accessed within frontend/layers/datalayer.js
+      responses:
+        200:
+          description: "app.docs.overview will be the referenced by the data property. result.data = [{section:string,topic:string, articles: int, sources:int },...]. result.error is null." 
+          schema:
+              $ref: '#/definitions/result'
+        default:
+          description: Server error. result.error will reference object.
+          schema:
+            $ref: '#/definitions/error'
+      tags: 
+        - datalayer
+        
+  /datalayer/importFromServer:
+    post:
+      summary: datalayer/importFromSever
+      description:
+        "This call is used to transport the actual (potentially colored) article data and a similarity matrix to the frontend. Accessed within frontend/layers/datalayer.js"
+      parameters:
+        - name: req.pairs
+          in: query
+          description: Array with the form [{section:string,topic:string}].
+          required: true
+          type: number
+          format: double
+        - name: req.metric
+          in: query
+          description: req.metric in ['cosine', 'jaccard'].
+          required: true
+          type: string
+          format: string
+      responses:
+        200:
+          description: "The data property will reference the following: {docs:[{...}, {...}], links: [{source: int, target:int, value: double}]. result.error is null." 
+          schema:
+              $ref: '#/definitions/result'
+        default:
+          description: Server error. result.error will reference object.
+          schema:
+            $ref: '#/definitions/error'
+      tags: 
+        - datalayer
+  /processor/run:
+    post:
+      summary: processor/run
+      description: |
+         This module returns a similarity matrix and a color lookup for a given set of documents. It's accessed (1) by frontend's datalayer to complement 
+         the information for articles imported on client side. (2) Programmatically accessed by backend's datalayer.
+      parameters:
+        - name: req.docs
+          in: query
+          description: Array of document objects.
+          required: true
+          type: number
+          format: double
+        - name: req.metric
+          in: query
+          description: metric in ['cosine', 'jaccard']
+          required: true
+          type: string
+          format: string  
+      responses:
+        200:
+          description: "The data property will reference the following: {colored: [{index:int, values:[r,g,b,a]}], links: [{source: int, target:int, value: double}]. result.error is null." 
+          schema:
+              $ref: '#/definitions/result'
+        default:
+          description: Server error. result.error will be the error object.
+          schema:
+            $ref: '#/definitions/error'
+      tags: 
+        - processor
+
+definitions:
+  result:
+    type: object
+    properties:
+      error:
+        type: 'object'
+        description: is null. 
+      data:
+        type: 'array'
+        description: Array.
+  error:
+    type: object
+    properties:
+      error:
+        type: 'object'
+        description: Error object.
+      data:
+        type: 'array'
+        description: Potentially empty array.

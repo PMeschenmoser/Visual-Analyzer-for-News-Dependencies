@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- stylesheets-->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/select/1.2.0/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <link rel="stylesheet" href="stylesheets/accordion.css">
+    <link rel="stylesheet" href="stylesheets/vis.css">
+
+    <!-- javascripts -->
+    <script data-main="javascripts/init" src="javascripts/external/require.js"></script>
+    <title>VAND</title>
+</head>
+<body>
+    <div id="wrapper_main">
+        <div id="wrapper_left"><!--begin wrapper_left-->
+            <div id="accordion" style="display:none"><!--begin accordion-->
+                <div>
+                    <h4 id="header_data">Data</h4>
+                    <div id="container_data">
+                        <button id="btn_showimport">Import Articles</button>
+                        <div class="expert">
+                            <fieldset>
+                                <legend>Metric</legend>
+                                <select id="select_metric" autocomplete="off">
+                                    <option value="cosine">Cosine</option>
+                                    <option value="jaccard">Jaccard</option>
+                                    <option value="sherlock">Sherlock</option>
+                                    <option value="jplag">JPlag</option>
+                                </select>
+                            </fieldset>
+                        </div>
+                        <div id="container_metrics" style="display:none">
+                    </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 id="header_vis">Visualization</h4>
+                    <div id="container_vissettings">
+                        <fieldset><legend>Rectangles</legend>
+                        Content: <br>
+                            <div id="select_wrapper">
+                            <select id="select_articlemode"  size="5" autocomplete="off">
+                                <option value="n">None</option>
+                                <option value="s">Source (S)</option>
+                                <option selected value="m" selected>Title (M)</option>
+                                <option value="l">Detailed (L)</option>
+                                <option value="auto">Auto</option>
+                            </select>
+                            </div>
+                            <div class="expert">
+                                Opacity <span></span>: <br>
+                                <div id="slider_alpha" class="slider"></div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Edges</legend>
+                            <button id="btn_unhighlight">Unhighlight All</button>
+                            <div class="expert">
+                                Max. Width <span></span>:<br>
+                                <div id="slider_edgewidth" class="slider"></div>
+                                Opacity <span></span>:<br>
+                                <div id="slider_edgeopacity" class="slider"></div>
+                                Edge Threshold <span></span>:<br>
+                                <div id="slider_edgethreshold" class="slider"></div>
+                                Scale Type: <br>
+                                <select id="select_scaletype">
+                                    <option value="linear">Linear</option>
+                                    <option value="square">Square Root</option>
+                                    <option value="cubic">Cubic Root</option>
+                                    <option value="log">Log</option>
+                                </select>
+                            </div>
+                        </fieldset>
+                        <div class="expert">
+                            <fieldset>
+                                <legend>Simulation</legend>
+                                Repulsion Strength <span></span>:<br>
+                                <div id="slider_repstrength" class="slider"></div>
+                            </fieldset>
+                        </div>
+                        <input type="checkbox" id="timetox" checked autocomplete="off">Time -> x<br>
+                    </div>
+
+                </div>
+            </div> <!-- end accordion-->
+            <button id="btn_togglemode" style="display:none">Set Novice Mode</button>
+        </div> <!-- end wrapper_left-->
+        <div id="wrapper_right">
+            <div id="canvas"></div>
+        </div>
+    </div> <!-- end wrapper_main-->
+
+    <div style="display:none"> <!--Dialog container.-->
+        <!-- Import dialog -->
+        <div id="dia_import" class="dia" title="Set your Article Source" style="text-align:center;">
+            <!-- Client-sided import, on the left -->
+            <div style="width:390px; float:left">
+                <button id="btn_importfs" >Import from Filesystem</button>
+                <button id="btn_settingsfs"> </button>
+                <input id="in_importfs" type="file" accept=".txt,.json" style="display:none" multiple/>
+                <!-- rename JSON aliasses or change filename pattern-->
+                <div id="settingsfs" style="display:none">
+                    <div style="display:block; margin-top:10px;border-style:solid;border-width:1px;padding-bottom:10px">
+                        <div style="display:block;text-align:left;"><b>txt Filename</b></div>
+                        <div>
+                            <span style="float:left; width:70px;">Pattern</span>
+                            <ul class="sortable"><li class="ui-state-default" value="year">yyyy</li><li class="ui-state-default" value="month">mm</li><li class="ui-state-default" value="day">dd</li><li class="ui-state-default" value="time">hhmm</li><li class="ui-state-default" value="title">title</li><li class="ui-state-default" value="source">source</li></ul>
+                        </div>
+                        <div style="width:121px;padding-top: 20px;">
+                            <span style="float:left; width:70px;">Separator</span>
+                            <select id="separator"><option>_</option><option>-</option><option>;</option></select>
+                        </div>
+                    </div>
+                    <div style="display:block;margin-top:0px; height:90px; border-style:solid;border-width:1px;padding-bottom:10px">
+                        <div style="float:left" id="aliases">
+                            <div style="display:block;text-align:left;padding-bottom:5px"><b>JSON Key Aliases</b></div>
+                            <div style="display:block"><span style="float:left;width:70px">Title</span><input type="text" value="title" name="title" ></div>
+                            <div style="display:block"><span style="float:left;width:70px">Content</span><input type="text" value="text" name="content"></div>
+                            <div style="display:block"><span style="float:left;width:70px">Source</span><input type="text" value="sourceDomain" name="source"></div>
+                            <div style="display:block"><span style="float:left;width:70px">Timestamp (yyy-mm-dd hh:mm)</span><input type="text" value="publish_date" name="ts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Separator between client- and server-sided import:-->
+            <div style="float:left; width:1px; margin:10px; background:black;height:100%"></div>
+            <!--Server-sided import:-->
+            <div style="float:left; width:390px">
+                <div>
+                    <button id="btn_importserver">Import from Server</button>
+                    <input id="in_filterserver" type="text" value="Search">
+                </div>
+                <!-- Datatable: -->
+                <div style="padding-top:30px;">
+                    <table id="tbl_overviewserver" cellspacing="0" width="100%" style="text-align:center;float:left;">
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Subject</th>
+                                <th>#Items</th>
+                                <th>#Sources</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- New Dialog: Article Reader-->
+        <div id="dia_reader" class="dia" title="Article Details">
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1">Content</a></li>
+                    <li><a href="#tabs-2">In-Scores</a></li>
+                    <li><a href="#tabs-3">Out-Scores</a></li>
+                </ul>
+                <div id="tabs-1" style="height:390px">
+                    <div style="height:100%;overflow:auto">
+                        <h1 id="reader_heading"></h1>
+                        <img id="reader_img" style="width:40%;float:left;position:relative;top:0"/>
+                        <span id="reader_src" style="font-style:italic;float:left"></span>
+                        <div id="reader_text"></div>
+                    </div>
+                </div>
+                <div id="tabs-2" style="height:390px">
+                    <table id="tbl_inranks" cellspacing="0" width="100%" style="text-align:center;float:left;">
+                        <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Title</th>
+                            <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="tabs-3" style="height:390px;">
+                    <table id="tbl_outranks" cellspacing="0" width="100%" style="text-align:center;">
+                        <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Title</th>
+                            <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
