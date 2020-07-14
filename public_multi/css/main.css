@@ -1,0 +1,91 @@
+html {
+    padding-top: 31px;
+    overflow:hidden;
+    background:white;
+}
+
+
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+
+
+input, select, textarea{
+    color: black;
+}
+
+#tbl_overviewserver_filter {
+    display:none;
+}
+
+#focusbox-right {
+    float:right;
+    height:calc(100% - 67px);
+    overflow:auto;
+    position:absolute;
+    right:0px;
+    top:30px;
+    width:220px;
+    padding-top:0.8em;
+    padding-left:0.8em;
+    padding-right:0.8em;
+    text-align: justify;
+    background:white;
+    box-shadow: inset 0 0 8px #000;
+}
+#focusbox-left {
+    float:right;
+    height:calc(100% - 67px);
+    overflow:auto;
+    position:absolute;
+    right:281px;
+    top:30px;
+    width:220px;
+    padding-top:0.8em;
+    padding-left:0.8em;
+    padding-right:0.8em;
+    text-align: justify;
+    background:white;
+    box-shadow: inset 0 0 8px #000;
+    display:none;
+}
+
+#canvas {
+    float:left;
+    min-height:540px;
+    left:0px;
+    top:0px;
+    width:calc(100% -  220px);
+    background: white;
+}
+
+#borderEncoding{
+    width: 150px !important;
+    height: 30px !important;
+    font-size:0.9em;
+    margin-left:15px;
+}
+
+
+select.form-control {
+    padding: 0 0px;
+}
+#focusbox-righttext, #focusbox-lefttext{
+     margin-right:-28px;
+     padding-right:13px;
+     overflow-x: hidden !important;
+    background:white;
+    margin-left:-1px;
+
+
+ }
+#focusbox-right, #focusbox-left{
+    overflow-x: hidden !important;
+}
+
+#focusbox-rightsvg, #focusbox-leftsvg{
+    top:0;
+    position:absolute;
+}

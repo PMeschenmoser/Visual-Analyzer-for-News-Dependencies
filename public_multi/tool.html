@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cyborg/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custombootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/vis.css">
+    <script data-main="js/init.js" type="text/javascript" src="js/libs/external/require.js"></script>
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="../" class="navbar-brand">VAND</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav navbar-left">
+                <li style="cursor:pointer" id="openImport"><a><b>Import</b></a></li>
+                <li style="cursor:pointer" id="openHeuristics"><a><b>Heuristics</b></a></li>
+                <li style="cursor:pointer" id="openVissettings"><a><b>Visualisation</b></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="mainwrapper" style="width:100%; height:100%;">
+    <div id="focusbox-left">
+        <div style="background:white; height:100px; width:100%;padding-bottom:5px; position:relative;border: 1px solid black">
+            <img id="articleimgdoc" height="90px" style="position: absolute;margin: auto;top: 0;left: 0;right: 0;bottom: 0;"></img>
+        </div>
+        <div id="focusbox-lefttext" style="height:calc(100% - 100px);overflow:auto;position:relative">
+            <div id="focusbox-leftsvg"></div>
+        </div>
+    </div>
+
+</div>
+<div id="focusbox-right">
+    <div style="background:white; height:100px; width:100%;padding-bottom:5px; position:relative;border: 1px solid black">
+        <img id="articleimgref" height="90px" style="position: absolute;margin: auto;top: 0;left: 0;right: 0;bottom: 0;"></img>
+    </div>
+    <div id="focusbox-righttext" style="height:calc(100% - 100px);overflow:auto;position:relative">
+        <div id="focusbox-rightsvg"></div>
+    </div>
+</div>
+<div id="canvas">
+</div>
+</div>
+<div id="connectormulti"></div>
+<div id="connectordual"></div>
+<div id="datalayer" style="display:none"></div>
+<div class="modal fade-scale" tabindex="-1" role="dialog" id="importDialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title" style="font-size:15px">Set Article Source.
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </p>
+
+            </div>
+            <div class="modal-body" style="height:200px">
+                <div style="width:300px; float:left">
+                    <button type="button" id="btn_importfs" class="btn btn-primary btn-xs">Import from Filesystem</button>
+                    <button id="btn_settingsfs" class="btn btn-primary btn-xs"> </button>
+                    <input id="in_importfs" type="file" accept=".txt,.json" style="display:none" multiple/>
+                    <!-- rename JSON aliasses or change filename pattern-->
+                    <div id="settingsfs" style="color:white;font-size:0.8em; display:none">
+                        <div style="display:block; margin-top:5px;border-style:solid;border-width:1px;padding-bottom:10px">
+                            <div style="display:block;text-align:left;"><b>txt Filename</b></div>
+                            <div>
+                                <span style="float:left; width:70px;">Pattern</span>
+                                <ul class="sortable"><li class="btn btn-primary btn-xs" value="year">yyyy</li><li class="btn btn-primary btn-xs" value="month">mm</li><li class="btn btn-primary btn-xs" value="day">dd</li><li class="btn btn-primary btn-xs" value="time">hhmm</li><li class="btn btn-primary btn-xs" value="title">title</li><li class="btn btn-primary btn-xs" value="source">source</li></ul>
+                            </div>
+                            <div style="width:121px;margin-top:-10px;">
+                                <span style="float:left; width:70px;">Separator</span>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-primary btn-xs active">
+                                        <input type="radio" name="separator" id="separator1" checked="">_
+                                    </label>
+                                    <label class="btn btn-primary btn-xs">
+                                        <input type="radio" name="separator" id="separator2">-
+                                    </label>
+                                    <label class="btn btn-primary  btn-xs">
+                                        <input type="radio" name="separator" id="separator3">;
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:block;margin-top:0px; height:50px; border-style:solid;border-width:1px;padding-bottom:10px">
+                            <div style="float:left" id="aliases">
+                                <div class="form-group">
+                                    <div style="float:left">
+                                        <label for="alias_title">Title</label>
+                                        <input type="text" class="form-control input-xs" style="width:50px" id="alias_title" value="title" name="title">
+                                    </div>
+                                    <div style="float:left">
+                                        <label for="alias_text">Content</label>
+                                        <input type="text" class="form-control input-xs" style="width:50px" id="alias_text" value="text" name="content">
+                                    </div>
+                                    <div style="float:left">
+                                        <label for="alias_source">Source</label>
+                                        <input type="text" class="form-control input-xs" style="width:60px" id="alias_source" value="sourceDomain" name="source">
+                                    </div>
+                                    <div style="float:left">
+                                        <label for="alias_ts">TS (yyyy-mm-dd hh:mm)</label>
+                                        <input type="text" class="form-control input-xs" style="width:60px" id="alias_ts" value="publish_date" name="ts">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Separator between client- and server-sided import:-->
+                <div style="float:left; width:1px; margin:10px; background:black;height:150px"></div>
+                <!--Server-sided import:-->
+                <div style="float:left; width:350px">
+                    <div>
+                        <button id="btn_importserver" class="btn btn-primary btn-xs">Import from Server</button>
+                        <input id="in_filterserver" class="input-xs" type="text" placeholder="Search">
+                    </div>
+                    <!-- Datatable: -->
+                    <div style="padding-top:10px;width:350px">
+                        <table id="tbl_overviewserver" cellspacing="0" width="100%" style="text-align:center;float:left;">
+                            <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Subject</th>
+                                <th>#Items</th>
+                                <th>#Sources</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade-scale" tabindex="-1" role="dialog" id="heuristicsDialog" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title" style="font-size:15px">Heuristic Settings.
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </p>
+
+            </div>
+            <div class="modal-body" style="height:200px;overflow:auto">
+                <div class="accordion" id="accordion">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" href="#generalHeader">
+                                General
+                            </a>
+                        </div>
+                        <div id="generalHeader" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                                <label>#Matching-Features (<span id="mfvalue">4-10</span>)</label>
+                                <div id="mfwrapper" style="width:150px; height:10px; background:white;margin-left:30px">
+                                    <div id="mfslider"></div>
+                                </div>
+                                <label>#Between-Features (<span id="fdvalue">0-10</span>)</label>
+                                <div id="fdwrapper" style="width:150px; height:10px; background:white;margin-left:30px">
+                                    <div id="fdslider"></div>
+                                </div>
+
+                                <label>Order Ratio (<span id="orvalue">0-1</span>)</label>
+                                <div id="orwrapper" style="width:150px; height:10px; background:white;margin-left:30px">
+                                    <div id="orslider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" href="#matchtypesHeader">
+                                    Match Types (AND)
+                                </a>
+                            </div>
+                            <div id="matchtypesHeader" class="accordion-body collapse">
+                                <div class="accordion-inner"  >
+                                    Show segments which contain features with only the following tags.
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="mtnn" pos="NN">
+                                        <label class="form-check-label" for="mtnn">NN</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="mtnns" pos="NNS">
+                                        <label class="form-check-label" for="mtnns">NNS</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="mtvb" pos="VB">
+                                        <label class="form-check-label" for="mtvb">VB</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="mtrb" pos="RB">
+                                        <label class="form-check-label" for="mtrb">RB</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="mtcd" pos="CD">
+                                        <label class="form-check-label" for="mtcd">CD</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade-scale" tabindex="-1" role="dialog" id="visDialog" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title" style="font-size:15px">Visualisation Settings.
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </p>
+            </div>
+            <div class="modal-body" style="height:200px">
+                <div style="width:300px; float:left">
+                    <div class="form-group">
+                        <label for="borderEncoding">Border Width Encoding</label>
+                        <br>
+                        <select id="borderEncoding" class="form-control form-control-sm">
+                            <option selected value="tfidf">tf.idf-Cosine Sim.</option>
+                            <option value="acclen">Acc. Length Ratio</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sofwrapper">Edge Selection Threshold (<span id="estvalue">1.01</span>)</label>
+                        <div id="estwrapper" style="width:150px; height:10px; background:white;margin-left:15px">
+                            <div id="estslider"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sofwrapper">Segment Opacity Factor (<span id="sofvalue">1</span>)</label>
+                        <div id="sofwrapper" style="width:150px; height:10px; background:white;margin-left:15px">
+                            <div id="sofslider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<span id="segdummy"></span>
+</body>
+</html>

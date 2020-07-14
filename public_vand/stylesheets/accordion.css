@@ -1,0 +1,85 @@
+/*
+    Classes given by accordion.js
+*/
+
+.acc-Header,
+.acc-Content {
+    font-family: 'Roboto';
+
+}
+
+.acc-Header {
+    display: block;
+    font-size: 1em;
+    cursor: pointer;
+    position: relative;
+    margin: 0px 0 0 0;
+    padding: .1em .5em .1em .7em;
+
+    min-height: 0;
+    /* support: IE7 */
+    padding-left: 2.2em;
+    border: 0.1px solid #000000;
+    font-weight: normal;
+    color: black;
+    background: -moz-linear-gradient(top, #EEE, #FFF);
+    background: -webkit-linear-gradient(top, #eee, #fff);
+    background: -ms-linear-gradient(top, #eee, #fff);
+    background: -o-linear-gradient(top, #eee, #fff);
+}
+
+.acc-Header:hover {
+    font-weight: bold;
+}
+
+.acc-OpenHeader{
+    border: 1px solid #0b93d5;
+    background: #007fff;
+    font-weight: normal;
+    color: white;
+}
+
+.acc-Content {
+    display: none;
+    padding: 0.5em 1em;
+    font-size:11px;
+    border-top: 0;
+    overflow: hidden;
+    border: 1px solid #555555;
+    background: #ffffff;
+    color: #000000;
+    border-bottom-right-radius: 5px;
+}
+
+.acc-Icon {
+    display: block;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
+    width: 1em;
+    height: 1em;
+    background-image: url("../images/ui-icons_cccccc_256x240.png");
+    background-position: -32px -16px;
+    left: .5em;
+}
+
+.btnHelper {
+    margin-top: 0.3em;
+}
+
+.acc-Icon.acc-Deflated {
+    background-position: -64px -16px;
+    left: .5em;
+}
+
+.acc-Check {
+    float: right;
+    position: relative;
+    bottom: 0.1em;
+}
+
+.acc-FirstHeader{
+    border-top-right-radius: 10px;
+}
