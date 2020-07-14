@@ -20,7 +20,7 @@ defines the latter ones within the backend.
 * Panning, zooming and focus + context ensure scalability. 
 * Much more things are applicable, visit our detailed [Feature Overview](https://github.com/PMeschenmoser/Visual-Analyzer-for-News-Dependencies/wiki/VAND-Multi:-Feature-Overview) or 
 [Frontend Interaction](https://github.com/PMeschenmoser/Visual-Analyzer-for-News-Dependencies/wiki/VAND-Multi:-Frontend-Interaction)! 
-* ...or have a look at [our beautiful demo slides](https://github.com/PMeschenmoser/Visual-Analyzer-for-News-Dependencies/blob/master/_wikidata/demo.pdf)! 
+
 
 ![matrices](https://i.imgur.com/gYILp4m.png)
 
