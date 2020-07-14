@@ -24,7 +24,8 @@ defines the latter ones within the backend.
 
 ![matrices](https://i.imgur.com/gYILp4m.png)
 
-### How to cite: 
+### How to cite VAND (Graph):
+Hamborg, F., Meschenmoser, P., Schubotz, M., & Gipp, B. (2019). NewsDeps: Visualizing the Origin of Information in News Articles. arXiv preprint arXiv:1909.10266.
 
 ### SETUP
 * Make sure that you have the latest node.js + npm installed.
